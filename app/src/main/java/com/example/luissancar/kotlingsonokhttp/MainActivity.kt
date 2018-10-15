@@ -1,12 +1,24 @@
 package com.example.luissancar.kotlingsonokhttp
 
+import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.FileReader
 import java.io.IOException
+import okhttp3.OkHttpClient
+import okhttp3.Request;
+import okhttp3.Response;
+import java.io.BufferedInputStream
+import java.io.BufferedReader
+import java.io.InputStreamReader
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,10 +26,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
+    GetJsonWithOkHttpClient(textView ).execute()
 
     }
+
+
 
     fun objetoAJson(v: View){
         val guitarra = Guitarra("Fender","Stratocaster",1500)
@@ -68,3 +81,31 @@ class MainActivity : AppCompatActivity() {
 
     }
 }
+
+
+open class GetJsonWithOkHttpClient(textView: TextView) : AsyncTask<Unit, Unit, String>() {
+
+    val mInnerTextView = textView
+
+    override fun doInBackground(vararg params: Unit?): String? {
+        val networkClient = NetworkClient()
+        val stream = BufferedInputStream(
+                networkClient.get("https://raw.githubusercontent.com/irontec/android-kotlin-samples/master/common-data/bilbao.json"))
+        return readStream(stream)
+    }
+
+    override fun onPostExecute(result: String?) {
+        super.onPostExecute(result)
+
+        mInnerTextView.text = result
+
+    }
+
+    fun readStream(inputStream: BufferedInputStream): String {
+        val bufferedReader = BufferedReader(InputStreamReader(inputStream))
+        val stringBuilder = StringBuilder()
+        bufferedReader.forEachLine { stringBuilder.append(it) }
+        return stringBuilder.toString()
+    }
+}
+
