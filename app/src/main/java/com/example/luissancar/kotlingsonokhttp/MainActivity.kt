@@ -25,8 +25,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        var aa= ArrayList<String>()
+        GetJsonWithOkHttpClient( aa).execute()
+      //  textView.text=aa[0]
+var f=5
 
-    GetJsonWithOkHttpClient(textView ).execute()
+        //GetJsonWithOkHttpClient(textView ).execute()
 
     }
 
@@ -83,6 +87,35 @@ class MainActivity : AppCompatActivity() {
 }
 
 
+open class GetJsonWithOkHttpClient(var datos: ArrayList<String>) : AsyncTask<Unit, Unit, String>() {
+
+    val mInnerTextView =datos
+
+    override fun doInBackground(vararg params: Unit?): String? {
+        val networkClient = NetworkClient()
+        val stream = BufferedInputStream(
+                networkClient.get("https://raw.githubusercontent.com/irontec/android-kotlin-samples/master/common-data/bilbao.json"))
+        return readStream(stream)
+    }
+
+    override fun onPostExecute(result: String?) {
+        super.onPostExecute(result)
+
+        datos.add ( result!!)
+
+    }
+
+    fun readStream(inputStream: BufferedInputStream): String {
+        val bufferedReader = BufferedReader(InputStreamReader(inputStream))
+        val stringBuilder = StringBuilder()
+        bufferedReader.forEachLine { stringBuilder.append(it) }
+        return stringBuilder.toString()
+    }
+}
+
+
+
+/*
 open class GetJsonWithOkHttpClient(textView: TextView) : AsyncTask<Unit, Unit, String>() {
 
     val mInnerTextView = textView
@@ -107,5 +140,5 @@ open class GetJsonWithOkHttpClient(textView: TextView) : AsyncTask<Unit, Unit, S
         bufferedReader.forEachLine { stringBuilder.append(it) }
         return stringBuilder.toString()
     }
-}
+}*/
 
