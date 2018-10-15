@@ -1,0 +1,19 @@
+{
+  "guitarras":[
+    {
+      "marca": "Fender",
+      "modelo": "Stratocaster",
+      "precio": 1500
+    },
+    {
+      "marca": "Fender",
+      "modelo": "Telecaster",
+      "precio": 1400
+    },
+    {
+      "marca": "Gibson",
+      "modelo": "Les Paul",
+      "precio": 2500
+    }
+  ]
+}
