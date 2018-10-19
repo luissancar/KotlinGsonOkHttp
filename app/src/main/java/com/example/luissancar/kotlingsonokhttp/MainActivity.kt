@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         textView.setMovementMethod(ScrollingMovementMethod())
+        button.setFocusableInTouchMode(true)
+        button.requestFocus()
 
 
     }

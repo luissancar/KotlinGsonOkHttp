@@ -89,6 +89,7 @@
             android:lines="20"
             android:scrollbars="vertical"
             android:text=""
+            android:textColor="@android:color/holo_green_dark"
             android:textSize="24sp"
             tools:layout_editor_absoluteY="192dp" />
 
