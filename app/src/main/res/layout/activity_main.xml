@@ -57,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:hint="Marca"
                 android:inputType="textPersonName" />
 
             <EditText
@@ -65,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:hint="Modelo"
                 android:inputType="textPersonName" />
 
             <EditText
@@ -73,20 +75,22 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:hint="Precio"
                 android:inputType="number" />
 
 
         </LinearLayout>
 
         <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorAccent"
-        android:lines="20"
-        android:scrollbars="vertical"
-        android:text=""
-        tools:layout_editor_absoluteY="192dp" />
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent"
+            android:lines="20"
+            android:scrollbars="vertical"
+            android:text=""
+            android:textSize="24sp"
+            tools:layout_editor_absoluteY="192dp" />
 
 
     </LinearLayout>

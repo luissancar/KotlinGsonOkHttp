@@ -27,8 +27,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun insertar(v : View){
-        val url="http://iesayala.ddns.net/json/insertguitar.php/?marca=Ibanez&modelo=moda&precio=123"
-        leerUrl(url)
+        if ((editTextMarca.length()>0) and (editTextModelo.length()>0) and (editTextPrecio.length()>0)  ) {
+            val url = "http://iesayala.ddns.net/json/insertguitar.php/?marca=" + editTextMarca.text.toString() + "&modelo=" + editTextModelo.text.toString() + "&precio=" + editTextPrecio.text.toString()
+            leerUrl(url)
+        }
     }
 
     fun objetoAJson(v: View){
