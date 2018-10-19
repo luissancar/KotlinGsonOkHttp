@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var aa= ArrayList<String>()
 
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
@@ -27,7 +26,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
+    fun insertar(v : View){
+        val url="http://iesayala.ddns.net/json/insertguitar.php/?marca=Ibanez&modelo=moda&precio=123"
+        leerUrl(url)
+    }
 
     fun objetoAJson(v: View){
         val guitarra = Guitarra("Fender","Stratocaster",1500)
