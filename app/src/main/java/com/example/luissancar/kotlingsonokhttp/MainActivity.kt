@@ -1,23 +1,16 @@
 package com.example.luissancar.kotlingsonokhttp
 
-import android.os.AsyncTask
+
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_main.*
-import java.io.FileReader
 import java.io.IOException
-import okhttp3.OkHttpClient
-import okhttp3.Request;
-import okhttp3.Response;
-import java.io.BufferedInputStream
-import java.io.BufferedReader
-import java.io.InputStreamReader
+import java.net.URL
+import android.os.StrictMode
+import android.text.method.ScrollingMovementMethod
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,11 +19,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         var aa= ArrayList<String>()
-        GetJsonWithOkHttpClient( aa).execute()
-      //  textView.text=aa[0]
-var f=5
 
-        //GetJsonWithOkHttpClient(textView ).execute()
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        textView.setMovementMethod(ScrollingMovementMethod())
+
 
     }
 
@@ -41,6 +34,7 @@ var f=5
         val gson=Gson()
         val json:String = gson.toJson(guitarra)
         Log.d("RESULTADO", json)
+        textView.text=json
 
     }
 
@@ -50,22 +44,66 @@ var f=5
         val json:String="{\"marca\":\"Gibson\",\"modelo\":\"SG\",\"precio\":1700}"
         val guitarra:Guitarra=gson.fromJson(json,Guitarra::class.java)
         Log.d("RESULTADO", guitarra.toString())
+        textView.text=guitarra.toString()
 
     }
 
 
+    fun URLJsonObjeto( v: View) {
 
-    fun ficheroJsonObjeto( v: View){
+        val gson = Gson()
+        try {
+
+
+        val json = leerUrl("http://iesayala.ddns.net/json/jsonguitarras.php")
+
+        val guitarra = gson.fromJson(json, GuitarraArray::class.java)
+
+            textView.text=""
+        for (item in guitarra.guitarras!!.iterator()) {
+            Log.d("RESULTADO", item.marca)
+            textView.text=textView.text.toString()+item.marca+" "+item.modelo+"\n"
+        }}
+        catch (e: Exception){
+            Log.d("RESULTADO", "error")
+            textView.text="Error"
+        }
+
+    }
+
+        fun ficheroJsonObjeto( v: View){
+
         val gson=Gson()
         val json= leerFichero("guitarras.json")
 
         val guitarra = gson.fromJson(json,GuitarraArray::class.java)
 
-
+            textView.text=""
         for (item in guitarra.guitarras!!.iterator()){
-              Log.d("RESULTADO", item.marca)
+            Log.d("RESULTADO", item.marca)
+            textView.text=textView.text.toString()+item.marca+" "+item.modelo+"\n"
         }
+
+
+
+        Log.d("RESULTADO", leerUrl("http://iesayala.ddns.net/json/jsonguitarras.php"))
     }
+
+    private fun leerUrl(urlString:String): String{
+
+        val response = try {
+            URL(urlString)
+                    .openStream()
+                    .bufferedReader()
+                    .use { it.readText() }
+        } catch (e: IOException) {
+            "Error with ${e.message}."
+        }
+
+        return response
+    }
+
+
 
     fun leerFichero(fichero: String): String {
         var stringFichero=""
@@ -85,60 +123,3 @@ var f=5
 
     }
 }
-
-
-open class GetJsonWithOkHttpClient(var datos: ArrayList<String>) : AsyncTask<Unit, Unit, String>() {
-
-    val mInnerTextView =datos
-
-    override fun doInBackground(vararg params: Unit?): String? {
-        val networkClient = NetworkClient()
-        val stream = BufferedInputStream(
-                networkClient.get("https://raw.githubusercontent.com/irontec/android-kotlin-samples/master/common-data/bilbao.json"))
-        return readStream(stream)
-    }
-
-    override fun onPostExecute(result: String?) {
-        super.onPostExecute(result)
-
-        datos.add ( result!!)
-
-    }
-
-    fun readStream(inputStream: BufferedInputStream): String {
-        val bufferedReader = BufferedReader(InputStreamReader(inputStream))
-        val stringBuilder = StringBuilder()
-        bufferedReader.forEachLine { stringBuilder.append(it) }
-        return stringBuilder.toString()
-    }
-}
-
-
-
-/*
-open class GetJsonWithOkHttpClient(textView: TextView) : AsyncTask<Unit, Unit, String>() {
-
-    val mInnerTextView = textView
-
-    override fun doInBackground(vararg params: Unit?): String? {
-        val networkClient = NetworkClient()
-        val stream = BufferedInputStream(
-                networkClient.get("https://raw.githubusercontent.com/irontec/android-kotlin-samples/master/common-data/bilbao.json"))
-        return readStream(stream)
-    }
-
-    override fun onPostExecute(result: String?) {
-        super.onPostExecute(result)
-
-        mInnerTextView.text = result
-
-    }
-
-    fun readStream(inputStream: BufferedInputStream): String {
-        val bufferedReader = BufferedReader(InputStreamReader(inputStream))
-        val stringBuilder = StringBuilder()
-        bufferedReader.forEachLine { stringBuilder.append(it) }
-        return stringBuilder.toString()
-    }
-}*/
-
